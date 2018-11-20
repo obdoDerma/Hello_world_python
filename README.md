@@ -5,10 +5,10 @@
         
         ### install python-pip 
         ```
-        - if it is ubuntu machine
+        #### if it is ubuntu machine
             apt-get update -y
             apt-get install -y python-pip python-dev build-essential
-        - if it is centos machine
+        #### if it is centos machine
             yum install -y python-pip
         ```
         
