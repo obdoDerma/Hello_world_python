@@ -1,40 +1,30 @@
-from flask import Flask, Response
-import matplotlib.pyplot as plt
-import io
 import base64
 
-app = Flask(__name__)
+def generate_simple_diagram():
+    """Generates a simple black and white pixel image as a base64 string."""
+    # A simple 8x8 pixel image (8 rows, 8 columns)
+    # 0 = black, 1 = white
+    # This represents a simple diagonal line
+    pixels = [
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1]
+    ]
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-@app.route('/plot')
-def plot():
-    # Generate the plot
-    plt.plot([1, 2, 3, 4], [1, 4, 9, 16])
-    plt.title("A Simple Line Plot")
-    plt.xlabel("X-axis")
-    plt.ylabel("Y-axis")
-
-    # Save the plot to a temporary in-memory buffer
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close()
-    buf.seek(0)
+    # Simple PGM header for a black-and-white image
+    header = "P2\n8 8\n1\n"
+    pixel_data = " ".join([str(p) for row in pixels for p in row])
     
-    # Encode the image to base64
-    plot_data = base64.b64encode(buf.getvalue()).decode('utf-8')
-    
-    # Return the image embedded in an HTML tag
-    return f"""
-    <html>
-        <body>
-            <h1>Your Python Sketch</h1>
-            <img src="data:image/png;base64,{plot_data}" />
-        </body>
-    </html>
-    """
+    image_data = f"{header}{pixel_data}".encode('utf-8')
+    return base64.b64encode(image_data).decode('utf-8')
 
+if __name__ == '__main__':
+    # Print the base64-encoded image data
+    print(generate_simple_diagram())
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
