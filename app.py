@@ -26,5 +26,3 @@ def generate_simple_diagram():
 if __name__ == '__main__':
     # Print the base64-encoded image data
     print(generate_simple_diagram())
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
